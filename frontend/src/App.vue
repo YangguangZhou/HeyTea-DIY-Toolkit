@@ -535,9 +535,24 @@ function buildFilename(base: string, blob?: Blob | null) {
 
 async function hashBlob(blob: Blob): Promise<string> {
   const buffer = await blob.arrayBuffer();
-  const digest = await crypto.subtle.digest('SHA-1', buffer);
+  const subtle = await getSubtleCrypto();
+  const digest = await subtle.digest('SHA-1', buffer);
   return Array.from(new Uint8Array(digest))
     .map((b) => b.toString(16).padStart(2, '0'))
     .join('');
+}
+
+let cachedSubtle: SubtleCrypto | null = null;
+async function getSubtleCrypto(): Promise<SubtleCrypto> {
+  if (cachedSubtle) {
+    return cachedSubtle;
+  }
+  if (typeof globalThis !== 'undefined' && globalThis.crypto?.subtle) {
+    cachedSubtle = globalThis.crypto.subtle;
+    return cachedSubtle;
+  }
+  const nodeCrypto = await import('crypto');
+  cachedSubtle = nodeCrypto.webcrypto.subtle;
+  return cachedSubtle;
 }
 </script>

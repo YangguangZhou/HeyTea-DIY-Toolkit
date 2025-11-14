@@ -10,6 +10,8 @@
     "postinstall": "npm run setup",
     "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix frontend\"",
     "frontend:build": "npm run build --prefix frontend",
+    "frontend:dev": "npm run dev --prefix frontend",
+    "frontend:start": "npm run start --prefix frontend",
     "server:start": "npm run start --prefix server",
     "build": "npm run frontend:build",
     "start": "npm run frontend:build && npm run server:start"
