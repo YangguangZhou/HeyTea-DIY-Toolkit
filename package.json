@@ -1,0 +1,32 @@
+{
+  "name": "heytea-picture",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server:install": "npm --prefix server install",
+    "frontend:install": "npm --prefix frontend install",
+    "setup": "npm run server:install && npm run frontend:install",
+    "postinstall": "npm run setup",
+    "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix frontend\"",
+    "frontend:build": "npm run build --prefix frontend",
+    "server:start": "npm run start --prefix server",
+    "build": "npm run frontend:build",
+    "start": "npm run frontend:build && npm run server:start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SuInk/heytea-picture.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/SuInk/heytea-picture/issues"
+  },
+  "homepage": "https://github.com/SuInk/heytea-picture#readme",
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}
