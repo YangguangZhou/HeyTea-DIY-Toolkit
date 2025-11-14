@@ -31,9 +31,9 @@ npm start       # Express 读取 dist 并提供 /api/*
 # 访问 http://localhost:8787
 ```
 
-## Vercel 部署（静态前端）
+## Vercel 部署（静态 + API 一体）
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FSuInk%2Fheytea-picture&project-name=heytea-cup&repository-name=heytea-cup&env=VITE_API_BASE&envDescription=Node%20%E4%BB%A3%E7%90%86%E5%9C%B0%E5%9D%80%EF%BC%88%E4%BE%8B%3A%20https%3A%2F%2Fproxy.example.com%29&root-directory=frontend&build-command=npm%20run%20frontend%3Abuild&install-command=npm%20install&output-directory=dist)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FSuInk%2Fheytea-picture&project-name=heytea-cup&repository-name=heytea-cup&build-command=npm%20run%20frontend%3Abuild&install-command=npm%20install&output-directory=frontend%2Fdist)
 
 1. Fork 本仓库，在 Vercel 导入仓库。
 2. 构建设置：
@@ -45,15 +45,9 @@ npm start       # Express 读取 dist 并提供 /api/*
 | Install Command   | `npm install`                     |
 | Output Directory  | `frontend/dist`                   |
 
-3. 在 Vercel *Environment Variables* 中添加：
+由于仓库根目录有 `api/index.js`（复用 Express 逻辑），Vercel 会自动生成 Serverless API，前端默认以同源 `/api/*` 调用，无需再填写 `VITE_API_BASE`。
 
-```
-VITE_API_BASE=https://your-server-domain
-```
-
-> Vercel 只托管静态资源，`VITE_API_BASE` 必须指向你部署的 Node 代理（见下一节）。
-
-## 部署 Node 代理（Express）
+## 自建 Node 代理（可选）
 
 可以选择任意支持 Node 18+ 的平台（VPS、Render、Railway 等）：
 
@@ -65,13 +59,13 @@ npm run frontend:build           # 构建一次前端
 npm run start --prefix server    # 启动 Express（默认 8787）
 ```
 
-`server/index.js` 会：
+`server/index.js` / `api/index.js` 共享同一 Express 应用：
 
-- 在 `/api/*` 处理短信登录、用户信息、杯贴上传等请求；
-- 自动加密手机号、签名、转发到 `app-go.heytea.com`；
-- 将 `frontend/dist` 托管为静态资源，非 `/api` 请求返回 `index.html`。
+- `/api/*` 处理短信、登录、用户信息、上传，自动加密 + 签名再转发到 `app-go.heytea.com`；
+- 本地运行时（`npm start --prefix server`）会托管 `frontend/dist`，非 `/api` 请求返回 `index.html`；
+- 在 Vercel 上，静态资源由平台托管，API 由 `api/index.js` 提供，前端使用默认同源 `/api`。
 
-部署完成后，将公网地址填入前端 `VITE_API_BASE` 环境变量即可。
+如果你在其它平台部署 Node 服务，将公网地址填到前端 `VITE_API_BASE` 即可覆盖默认值。
 
 ## 目录结构
 
