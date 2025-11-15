@@ -1,12 +1,12 @@
 <template>
-  <div class="min-h-screen bg-slate-950 pb-16 text-slate-50">
+  <div class="min-h-screen bg-white pb-16 text-gray-900">
     <div class="mx-auto max-w-6xl px-4 py-10">
-      <header class="flex flex-col gap-2 pb-8">
+      <header class="flex flex-col gap-6 pb-8">
         <div class="flex flex-wrap items-center justify-between gap-3">
-          <p class="text-sm uppercase tracking-widest text-brand-300">HeyTea DIY Toolkit</p>
+          <p class="text-sm font-medium uppercase tracking-widest text-gray-600">HeyTea DIY Toolkit</p>
           <a
             :href="GITHUB_URL"
-            class="flex items-center gap-2 rounded-full border border-white/20 px-3 py-1 text-xs uppercase tracking-widest text-slate-100 transition hover:border-white/60 hover:bg-white/10"
+            class="flex items-center gap-2 rounded-full border border-gray-300 px-3 py-1 text-xs font-medium uppercase tracking-widest text-gray-700 transition hover:border-gray-900 hover:bg-gray-50"
             target="_blank"
             rel="noreferrer"
           >
@@ -23,35 +23,58 @@
             <span>GitHub</span>
           </a>
         </div>
-        <h1 class="text-3xl font-semibold">喜茶杯贴前端工作台</h1>
+        <h1 class="text-3xl font-bold text-gray-900">喜茶杯贴工作台</h1>
+        
+        <!-- Legal Disclaimer -->
+        <el-alert
+          type="warning"
+          :closable="false"
+          show-icon
+          class="border-amber-200 bg-amber-50"
+        >
+          <template #title>
+            <div class="flex items-start gap-2">
+              <el-icon class="mt-0.5"><WarningFilled /></el-icon>
+              <div class="flex-1">
+                <p class="font-semibold text-gray-900 mb-1">免责声明</p>
+                <div class="text-sm text-gray-700 space-y-1">
+                  <p>本软件仅供学习交流使用，不得用于任何非法用途。</p>
+                  <p>请合理使用，禁止用于违法用途。</p>
+                  <p>使用者应遵守相关法律法规，承担使用本软件产生的一切后果。</p>
+                  <p>开发者不对因使用本软件而产生的任何损失或法律责任负责。</p>
+                </div>
+              </div>
+            </div>
+          </template>
+        </el-alert>
       </header>
 
       <div class="grid gap-6 lg:grid-cols-5">
         <section class="lg:col-span-2">
-          <el-card body-style="{padding: '1.5rem'}" shadow="hover" class="space-y-4">
+          <el-card body-style="{padding: '1.5rem'}" shadow="hover" class="border border-gray-200 space-y-4">
             <div
               :class="[
                 'rounded-xl border p-4 text-sm',
                 user
-                  ? 'border-green-400/70 bg-green-400/20 text-green'
-                  : 'text-green/10 bg-slate-900/40 text-slate-200'
+                  ? 'border-green-200 bg-green-50 text-green-800'
+                  : 'border-gray-200 bg-gray-50 text-gray-700'
               ]"
             >
               <p
-                class="text-xs uppercase tracking-widest"
-                :class="user ? 'text-green/90' : 'text-slate-400'"
+                class="text-xs font-medium uppercase tracking-widest"
+                :class="user ? 'text-green-700' : 'text-gray-500'"
               >
                 当前状态
               </p>
-              <p class="text-2xl font-semibold mt-1 text-green">
+              <p class="text-2xl font-bold mt-1" :class="user ? 'text-green-800' : 'text-gray-700'">
                 {{ user ? `已登录 ${user.name}` : '未登录' }}
               </p>
-              <p v-if="user" class="text-sm mt-1 text-green">
+              <p v-if="user" class="text-sm mt-1 text-green-700">
                 ID: {{ user.user_main_id }}
               </p>
             </div>
 
-            <el-tabs v-model="activeTab" class="text-slate-900">
+            <el-tabs v-model="activeTab" class="text-gray-900">
               <el-tab-pane label="短信验证码" name="sms">
                 <template v-if="!user">
                   <el-form label-position="top" class="space-y-4">
@@ -105,7 +128,7 @@
             </el-tabs>
 
             <div class="mt-2 flex items-center justify-between">
-              <label class="flex items-center gap-2 text-sm text-slate-300">
+              <label class="flex items-center gap-2 text-sm text-gray-600">
                 <el-switch v-model="rememberMe" size="small" /> 记住 Token（本地加密存储）
               </label>
               <el-button link type="danger" @click="clearAuth" :disabled="!authToken">
@@ -116,10 +139,13 @@
         </section>
 
         <section class="lg:col-span-3">
-          <el-card body-style="{padding: '1.5rem'}" shadow="hover" class="space-y-6">
+          <el-card body-style="{padding: '1.5rem'}" shadow="hover" class="border border-gray-200 space-y-6">
             <div class="flex flex-wrap items-center gap-3">
-              <el-button type="primary" @click="triggerFileDialog">选择或拖入 PNG / JPG</el-button>
-              <span class="text-sm text-slate-300">{{ selectedFileLabel }}</span>
+              <el-button type="primary" @click="triggerFileDialog">
+                <el-icon class="mr-1"><Upload /></el-icon>
+                选择或拖入 PNG / JPG
+              </el-button>
+              <span class="text-sm text-gray-600">{{ selectedFileLabel }}</span>
               <input
                 ref="fileInputRef"
                 type="file"
@@ -132,11 +158,11 @@
             <div class="grid gap-4 lg:grid-cols-2">
               <div class="space-y-3">
                 <div class="flex items-center justify-between">
-                  <h3 class="text-lg font-semibold">杯贴效果 {{ CUP_WIDTH }}×{{ CUP_HEIGHT }} px</h3>
-                  <el-tag size="small" effect="dark">@2:3 比例</el-tag>
+                  <h3 class="text-lg font-semibold text-gray-900">杯贴效果 {{ CUP_WIDTH }}×{{ CUP_HEIGHT }} px</h3>
+                  <el-tag size="small" effect="plain" class="border-gray-200">@2:3 比例</el-tag>
                 </div>
                 <div
-                  class="relative rounded-2xl border border-white/10 bg-black/30 p-3"
+                  class="relative rounded-2xl border border-gray-200 bg-gray-50 p-3"
                   @dragenter.prevent="handleDragEnter"
                   @dragover.prevent="handleDragOver"
                   @dragleave="handleDragLeave"
@@ -150,43 +176,44 @@
                   />
                   <div
                     v-if="!hasPreview"
-                    class="flex h-[420px] flex-col items-center justify-center gap-2 text-slate-400"
+                    class="flex h-[420px] flex-col items-center justify-center gap-2 text-gray-500"
                   >
-                    <span class="text-xl">🖼️</span>
-                    <p class="text-sm">先选择一张图片，系统会自动缩放到 596×832 并可选灰度</p>
+                    <el-icon :size="48" class="text-gray-400"><Picture /></el-icon>
+                    <p class="text-sm text-center px-4">先选择一张图片，系统会自动缩放到 596×832 并可选灰度</p>
                   </div>
                   <div
                     v-if="isRendering"
-                    class="absolute inset-3 rounded-lg bg-black/60 backdrop-blur-sm"
+                    class="absolute inset-3 rounded-lg bg-white/90 backdrop-blur-sm"
                   >
-                    <div class="flex h-full items-center justify-center text-sm text-slate-200">
+                    <div class="flex h-full items-center justify-center text-sm text-gray-700">
                       正在处理图片…
                     </div>
                   </div>
                   <div
                     v-if="isDraggingFile"
-                    class="absolute inset-3 flex flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed border-brand-300 bg-black/70 text-center text-sm text-slate-200 backdrop-blur"
+                    class="absolute inset-3 flex flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed border-gray-400 bg-white/90 text-center text-sm text-gray-700 backdrop-blur"
                   >
-                    <span class="text-xl">📥</span>
+                    <el-icon :size="32" class="text-gray-600"><Download /></el-icon>
                     <p>松开即可上传图片</p>
                   </div>
                 </div>
-                <div class="flex items-center justify-between text-xs text-slate-400">
+                <div class="flex items-center justify-between text-xs text-gray-500">
                   <span>当前文件：{{ processedFormatLabel }} · {{ processedSizeLabel }}</span>
-                  <span :class="exceedsLimit ? 'text-red-400' : ''">限制 ≤ {{ MAX_SIZE_KB }}KB</span>
+                  <span :class="exceedsLimit ? 'text-red-600' : ''">限制 ≤ {{ MAX_SIZE_KB }}KB</span>
                 </div>
-                <p v-if="compressionHint" class="text-xs text-amber-300">{{ compressionHint }}</p>
+                <p v-if="compressionHint" class="text-xs text-amber-700 bg-amber-50 p-2 rounded">{{ compressionHint }}</p>
                 <el-alert
                   :closable="false"
                   title="提示"
                   type="info"
                   description="可在黑白 / 灰度 / 原图模式间切换，并调整裁剪方式，确保宽高符合喜茶要求（596×832，小于 200KB）。"
                   show-icon
+                  class="border-blue-200 bg-blue-50"
                 />
               </div>
 
               <div class="space-y-4">
-                <el-form label-width="110px" class="text-slate-900">
+                <el-form label-width="110px" class="text-gray-900">
                 <el-form-item label="色彩模式">
                   <el-radio-group v-model="toneMode" size="small">
                     <el-radio-button label="binary">黑白</el-radio-button>
@@ -197,7 +224,7 @@
                 <el-form-item v-if="toneMode === 'binary'" label="黑白阈值">
                   <div class="w-full">
                     <el-slider v-model="binaryThreshold" :min="60" :max="220" :step="5" show-stops />
-                    <p class="mt-1 text-xs text-slate-400">
+                    <p class="mt-1 text-xs text-gray-500">
                       阈值越高整体越亮（当前：{{ binaryThreshold }}）。
                     </p>
                   </div>
@@ -223,12 +250,14 @@
                     :loading="isUploading"
                     @click="handleUpload"
                   >
+                    <el-icon class="mr-1"><Upload /></el-icon>
                     上传杯贴
                   </el-button>
                   <el-button
                     :disabled="!hasPreview"
                     @click="handleDownload"
                   >
+                    <el-icon class="mr-1"><Download /></el-icon>
                     下载 PNG
                   </el-button>
                   <el-button
@@ -237,6 +266,7 @@
                     :disabled="!hasPreview"
                     @click="renderPreview"
                   >
+                    <el-icon class="mr-1"><Refresh /></el-icon>
                     重新渲染
                   </el-button>
                 </div>
@@ -249,20 +279,20 @@
                   <template #sub-title>
                     <span
                       v-if="uploadState.type === 'success'"
-                      class="text-xs text-slate-400"
+                      class="text-xs text-gray-600"
                     >
                       如果工具对你有帮助，欢迎
                       <a
                         :href="DONATE_QR_URL"
                         target="_blank"
                         rel="noreferrer"
-                        class="ml-1 text-brand-300 underline decoration-dotted hover:text-brand-200"
+                        class="ml-1 text-blue-600 underline decoration-dotted hover:text-blue-700"
                       >赞赏</a
                       >，谢谢支持 💛
                     </span>
                     <span
                       v-else-if="uploadState.type === 'error'"
-                      class="text-xs text-red-200"
+                      class="text-xs text-red-600"
                     >
                       可能是触发了每日上传 10 张的限制，请稍后再试。
                     </span>
@@ -279,7 +309,8 @@
 
 <script setup lang="ts">
 import { computed, onUnmounted, ref, watch } from 'vue';
-import { ElMessage, ElMessageBox } from 'element-plus';
+import { ElMessage, ElMessageBox, ElIcon } from 'element-plus';
+import { Upload, Download, Picture, Refresh, WarningFilled } from '@element-plus/icons-vue';
 import { isAxiosError } from 'axios';
 
 import { CAPTCHA_APP_ID, CUP_HEIGHT, CUP_WIDTH, MAX_UPLOAD_BYTES } from '@/config/heytea';
@@ -294,7 +325,7 @@ import {
   type HeyTeaUser,
 } from '@/services/heytea';
 
-const GITHUB_URL = 'https://github.com/SuInk/HeyTea-DIY-Toolkit';
+const GITHUB_URL = 'https://github.com/YangguangZhou/HeyTea-DIY-Toolkit/';
 const STORAGE_KEY = 'heytea-token';
 const DONATE_QR_URL = `${import.meta.env.BASE_URL}donate.jpg`;
 
