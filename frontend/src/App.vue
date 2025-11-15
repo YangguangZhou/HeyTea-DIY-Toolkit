@@ -1,12 +1,12 @@
 <template>
-  <div class="min-h-screen bg-white pb-16 text-gray-900">
+  <div class="min-h-screen bg-white pb-16 text-black">
     <div class="mx-auto max-w-6xl px-4 py-10">
       <header class="flex flex-col gap-6 pb-8">
         <div class="flex flex-wrap items-center justify-between gap-3">
-          <p class="text-sm font-medium uppercase tracking-widest text-gray-600">HeyTea DIY Toolkit</p>
+          <p class="text-sm font-bold uppercase tracking-widest text-black">HeyTea DIY Toolkit</p>
           <a
             :href="GITHUB_URL"
-            class="flex items-center gap-2 rounded-full border border-gray-300 px-3 py-1 text-xs font-medium uppercase tracking-widest text-gray-700 transition hover:border-gray-900 hover:bg-gray-50"
+            class="flex items-center gap-2 rounded-xl border-2 border-black px-4 py-2 text-xs font-bold uppercase tracking-widest text-black transition hover:bg-black hover:text-white"
             target="_blank"
             rel="noreferrer"
           >
@@ -23,58 +23,48 @@
             <span>GitHub</span>
           </a>
         </div>
-        <h1 class="text-3xl font-bold text-gray-900">喜茶杯贴工作台</h1>
+        <h1 class="text-4xl font-bold text-black">喜茶杯贴工作台</h1>
         
         <!-- Legal Disclaimer -->
-        <el-alert
-          type="warning"
-          :closable="false"
-          show-icon
-          class="border-amber-200 bg-amber-50"
-        >
-          <template #title>
-            <div class="flex items-start gap-2">
-              <el-icon class="mt-0.5"><WarningFilled /></el-icon>
-              <div class="flex-1">
-                <p class="font-semibold text-gray-900 mb-1">免责声明</p>
-                <div class="text-sm text-gray-700 space-y-1">
-                  <p>本软件仅供学习交流使用，不得用于任何非法用途。</p>
-                  <p>请合理使用，禁止用于违法用途。</p>
-                  <p>使用者应遵守相关法律法规，承担使用本软件产生的一切后果。</p>
-                  <p>开发者不对因使用本软件而产生的任何损失或法律责任负责。</p>
-                </div>
+        <div class="rounded-2xl border-2 border-black bg-white p-6">
+          <div class="flex items-start gap-3">
+            <el-icon :size="24" class="mt-1 flex-shrink-0"><WarningFilled /></el-icon>
+            <div class="flex-1">
+              <p class="font-bold text-black text-lg mb-3">免责声明</p>
+              <div class="text-sm text-black space-y-2 leading-relaxed">
+                <p>本软件仅供学习交流使用，不得用于任何非法用途。</p>
+                <p>请合理使用，禁止用于违法用途。</p>
+                <p>使用者应遵守相关法律法规，承担使用本软件产生的一切后果。</p>
+                <p>开发者不对因使用本软件而产生的任何损失或法律责任负责。</p>
               </div>
             </div>
-          </template>
-        </el-alert>
+          </div>
+        </div>
       </header>
 
       <div class="grid gap-6 lg:grid-cols-5">
         <section class="lg:col-span-2">
-          <el-card body-style="{padding: '1.5rem'}" shadow="hover" class="border border-gray-200 space-y-4">
+          <div class="rounded-2xl border-2 border-black bg-white p-6 space-y-6">
             <div
               :class="[
-                'rounded-xl border p-4 text-sm',
+                'rounded-xl border-2 p-6 text-sm font-medium',
                 user
-                  ? 'border-green-200 bg-green-50 text-green-800'
-                  : 'border-gray-200 bg-gray-50 text-gray-700'
+                  ? 'border-black bg-black text-white'
+                  : 'border-black bg-white text-black'
               ]"
             >
-              <p
-                class="text-xs font-medium uppercase tracking-widest"
-                :class="user ? 'text-green-700' : 'text-gray-500'"
-              >
+              <p class="text-xs font-bold uppercase tracking-widest opacity-70 mb-2">
                 当前状态
               </p>
-              <p class="text-2xl font-bold mt-1" :class="user ? 'text-green-800' : 'text-gray-700'">
+              <p class="text-2xl font-bold">
                 {{ user ? `已登录 ${user.name}` : '未登录' }}
               </p>
-              <p v-if="user" class="text-sm mt-1 text-green-700">
+              <p v-if="user" class="text-sm mt-2 opacity-80">
                 ID: {{ user.user_main_id }}
               </p>
             </div>
 
-            <el-tabs v-model="activeTab" class="text-gray-900">
+            <el-tabs v-model="activeTab" class="custom-tabs">
               <el-tab-pane label="短信验证码" name="sms">
                 <template v-if="!user">
                   <el-form label-position="top" class="space-y-4">
@@ -128,24 +118,27 @@
             </el-tabs>
 
             <div class="mt-2 flex items-center justify-between">
-              <label class="flex items-center gap-2 text-sm text-gray-600">
+              <label class="flex items-center gap-2 text-sm font-medium text-black">
                 <el-switch v-model="rememberMe" size="small" /> 记住 Token（本地加密存储）
               </label>
-              <el-button link type="danger" @click="clearAuth" :disabled="!authToken">
+              <el-button class="font-bold" link type="danger" @click="clearAuth" :disabled="!authToken">
                 退出登录
               </el-button>
             </div>
-          </el-card>
+          </div>
         </section>
 
         <section class="lg:col-span-3">
-          <el-card body-style="{padding: '1.5rem'}" shadow="hover" class="border border-gray-200 space-y-6">
+          <div class="rounded-2xl border-2 border-black bg-white p-6 space-y-6">
             <div class="flex flex-wrap items-center gap-3">
-              <el-button type="primary" @click="triggerFileDialog">
-                <el-icon class="mr-1"><Upload /></el-icon>
+              <button
+                @click="triggerFileDialog"
+                class="flex items-center gap-2 rounded-xl border-2 border-black bg-black px-6 py-3 font-bold text-white transition hover:bg-white hover:text-black"
+              >
+                <el-icon><Upload /></el-icon>
                 选择或拖入 PNG / JPG
-              </el-button>
-              <span class="text-sm text-gray-600">{{ selectedFileLabel }}</span>
+              </button>
+              <span class="text-sm font-medium text-black">{{ selectedFileLabel }}</span>
               <input
                 ref="fileInputRef"
                 type="file"
@@ -155,14 +148,56 @@
               />
             </div>
 
-            <div class="grid gap-4 lg:grid-cols-2">
-              <div class="space-y-3">
+            <div class="grid gap-6 lg:grid-cols-2">
+              <div class="space-y-4">
                 <div class="flex items-center justify-between">
-                  <h3 class="text-lg font-semibold text-gray-900">杯贴效果 {{ CUP_WIDTH }}×{{ CUP_HEIGHT }} px</h3>
-                  <el-tag size="small" effect="plain" class="border-gray-200">@2:3 比例</el-tag>
+                  <h3 class="text-lg font-bold text-black">杯贴效果 {{ CUP_WIDTH }}×{{ CUP_HEIGHT }} px</h3>
+                  <span class="rounded-lg border-2 border-black px-3 py-1 text-xs font-bold">@2:3 比例</span>
                 </div>
+                
+                <!-- Cropper Area -->
                 <div
-                  class="relative rounded-2xl border border-gray-200 bg-gray-50 p-3"
+                  v-if="workingImage && !hasPreview"
+                  class="relative rounded-2xl border-2 border-black bg-white p-4"
+                >
+                  <div class="mb-3 flex items-center justify-between">
+                    <span class="text-sm font-bold">调整图片位置和大小</span>
+                    <button
+                      @click="applyCrop"
+                      class="rounded-lg border-2 border-black bg-black px-4 py-2 text-sm font-bold text-white hover:bg-white hover:text-black"
+                    >
+                      应用裁切
+                    </button>
+                  </div>
+                  <div 
+                    ref="cropperContainer"
+                    class="relative overflow-hidden rounded-xl border-2 border-black bg-gray-100"
+                    style="aspect-ratio: 596 / 832"
+                  >
+                    <Cropper
+                      ref="cropperRef"
+                      class="cropper"
+                      :src="cropperImageSrc"
+                      :stencil-props="{
+                        aspectRatio: CUP_WIDTH / CUP_HEIGHT,
+                      }"
+                      :default-size="{
+                        width: CUP_WIDTH,
+                        height: CUP_HEIGHT,
+                      }"
+                      image-restriction="none"
+                      :transitions="false"
+                    />
+                  </div>
+                  <p class="mt-2 text-xs text-black">
+                    💡 使用鼠标滚轮或双指缩放图片，拖动调整位置
+                  </p>
+                </div>
+
+                <!-- Preview Area -->
+                <div
+                  v-else
+                  class="relative rounded-2xl border-2 border-black bg-gray-50 p-4"
                   @dragenter.prevent="handleDragEnter"
                   @dragover.prevent="handleDragOver"
                   @dragleave="handleDragLeave"
@@ -171,136 +206,169 @@
                   <canvas
                     v-show="hasPreview"
                     ref="canvasRef"
-                    class="w-full rounded-lg"
+                    class="w-full rounded-xl"
                     style="aspect-ratio: 596 / 832"
                   />
                   <div
-                    v-if="!hasPreview"
-                    class="flex h-[420px] flex-col items-center justify-center gap-2 text-gray-500"
+                    v-if="!hasPreview && !workingImage"
+                    class="flex h-[420px] flex-col items-center justify-center gap-3 text-black"
                   >
-                    <el-icon :size="48" class="text-gray-400"><Picture /></el-icon>
-                    <p class="text-sm text-center px-4">先选择一张图片，系统会自动缩放到 596×832 并可选灰度</p>
+                    <el-icon :size="64" class="opacity-30"><Picture /></el-icon>
+                    <p class="text-sm font-medium text-center px-4">先选择一张图片，系统会自动缩放到 596×832 并可选灰度</p>
                   </div>
                   <div
                     v-if="isRendering"
-                    class="absolute inset-3 rounded-lg bg-white/90 backdrop-blur-sm"
+                    class="absolute inset-4 rounded-xl bg-white/95 backdrop-blur-sm flex items-center justify-center"
                   >
-                    <div class="flex h-full items-center justify-center text-sm text-gray-700">
+                    <div class="text-sm font-bold text-black">
                       正在处理图片…
                     </div>
                   </div>
                   <div
                     v-if="isDraggingFile"
-                    class="absolute inset-3 flex flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed border-gray-400 bg-white/90 text-center text-sm text-gray-700 backdrop-blur"
+                    class="absolute inset-4 flex flex-col items-center justify-center gap-3 rounded-xl border-4 border-dashed border-black bg-white/95 text-center backdrop-blur"
                   >
-                    <el-icon :size="32" class="text-gray-600"><Download /></el-icon>
-                    <p>松开即可上传图片</p>
+                    <el-icon :size="48"><Download /></el-icon>
+                    <p class="font-bold text-black">松开即可上传图片</p>
                   </div>
                 </div>
-                <div class="flex items-center justify-between text-xs text-gray-500">
+                <div class="flex items-center justify-between text-xs font-medium text-black">
                   <span>当前文件：{{ processedFormatLabel }} · {{ processedSizeLabel }}</span>
-                  <span :class="exceedsLimit ? 'text-red-600' : ''">限制 ≤ {{ MAX_SIZE_KB }}KB</span>
+                  <span :class="exceedsLimit ? 'font-bold text-red-600' : ''">限制 ≤ {{ MAX_SIZE_KB }}KB</span>
                 </div>
-                <p v-if="compressionHint" class="text-xs text-amber-700 bg-amber-50 p-2 rounded">{{ compressionHint }}</p>
-                <el-alert
-                  :closable="false"
-                  title="提示"
-                  type="info"
-                  description="可在黑白 / 灰度 / 原图模式间切换，并调整裁剪方式，确保宽高符合喜茶要求（596×832，小于 200KB）。"
-                  show-icon
-                  class="border-blue-200 bg-blue-50"
-                />
+                <p v-if="compressionHint" class="text-xs font-medium text-amber-700 bg-amber-50 p-3 rounded-xl border border-amber-200">{{ compressionHint }}</p>
+                <div class="rounded-xl border-2 border-black bg-blue-50 p-4">
+                  <div class="flex gap-2">
+                    <el-icon class="mt-0.5 flex-shrink-0"><InfoFilled /></el-icon>
+                    <div class="text-xs font-medium text-black leading-relaxed">
+                      可在黑白 / 灰度 / 原图模式间切换，确保宽高符合喜茶要求（596×832，小于 200KB）。
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div class="space-y-4">
-                <el-form label-width="110px" class="text-gray-900">
-                <el-form-item label="色彩模式">
-                  <el-radio-group v-model="toneMode" size="small">
-                    <el-radio-button label="binary">黑白</el-radio-button>
-                    <el-radio-button label="grayscale">灰度</el-radio-button>
-                    <el-radio-button label="original">原图</el-radio-button>
-                  </el-radio-group>
-                </el-form-item>
-                <el-form-item v-if="toneMode === 'binary'" label="黑白阈值">
-                  <div class="w-full">
+                <div class="rounded-xl border-2 border-black bg-white p-4 space-y-4">
+                  <div>
+                    <label class="block text-sm font-bold text-black mb-2">色彩模式</label>
+                    <div class="flex gap-2">
+                      <button
+                        v-for="mode in toneOptions"
+                        :key="mode.value"
+                        @click="toneMode = mode.value"
+                        :class="[
+                          'flex-1 rounded-lg border-2 px-4 py-2 text-sm font-bold transition',
+                          toneMode === mode.value
+                            ? 'border-black bg-black text-white'
+                            : 'border-black bg-white text-black hover:bg-gray-100'
+                        ]"
+                      >
+                        {{ mode.label }}
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div v-if="toneMode === 'binary'">
+                    <label class="block text-sm font-bold text-black mb-2">黑白阈值</label>
                     <el-slider v-model="binaryThreshold" :min="60" :max="220" :step="5" show-stops />
-                    <p class="mt-1 text-xs text-gray-500">
+                    <p class="mt-2 text-xs font-medium text-black">
                       阈值越高整体越亮（当前：{{ binaryThreshold }}）。
                     </p>
                   </div>
-                </el-form-item>
-                <el-form-item label="缩放策略">
-                  <el-select v-model="fitMode" placeholder="选择适配方式">
-                    <el-option label="填满画布（裁切边缘）" value="cover" />
-                    <el-option label="完整保留（留空白）" value="contain" />
-                  </el-select>
-                </el-form-item>
-                <el-form-item label="强制输出 PNG">
-                  <el-switch v-model="forcePng" />
-                </el-form-item>
-                <el-form-item label="文件名">
-                  <el-input v-model="downloadName" placeholder="上传时使用的文件名" />
-                </el-form-item>
-                </el-form>
+                  
+                  <div>
+                    <label class="block text-sm font-bold text-black mb-2">强制输出 PNG</label>
+                    <el-switch v-model="forcePng" />
+                  </div>
+                  
+                  <div>
+                    <label class="block text-sm font-bold text-black mb-2">文件名</label>
+                    <input
+                      v-model="downloadName"
+                      placeholder="上传时使用的文件名"
+                      class="w-full rounded-lg border-2 border-black px-3 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-black"
+                    />
+                  </div>
+                </div>
 
                 <div class="flex flex-wrap gap-3">
-                  <el-button
-                    type="success"
+                  <button
+                    v-if="workingImage && !hasPreview"
+                    @click="cancelCrop"
+                    class="rounded-lg border-2 border-black bg-white px-6 py-3 font-bold text-black hover:bg-black hover:text-white"
+                  >
+                    <el-icon class="mr-1"><Close /></el-icon>
+                    重新选择
+                  </button>
+                  <button
                     :disabled="!canUpload"
-                    :loading="isUploading"
                     @click="handleUpload"
+                    :class="[
+                      'rounded-lg border-2 px-6 py-3 font-bold transition',
+                      canUpload
+                        ? 'border-black bg-black text-white hover:bg-white hover:text-black'
+                        : 'border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed'
+                    ]"
                   >
                     <el-icon class="mr-1"><Upload /></el-icon>
-                    上传杯贴
-                  </el-button>
-                  <el-button
+                    {{ isUploading ? '上传中...' : '上传杯贴' }}
+                  </button>
+                  <button
                     :disabled="!hasPreview"
                     @click="handleDownload"
+                    :class="[
+                      'rounded-lg border-2 px-6 py-3 font-bold transition',
+                      hasPreview
+                        ? 'border-black bg-white text-black hover:bg-black hover:text-white'
+                        : 'border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed'
+                    ]"
                   >
                     <el-icon class="mr-1"><Download /></el-icon>
                     下载 PNG
-                  </el-button>
-                  <el-button
-                    link
-                    type="info"
-                    :disabled="!hasPreview"
-                    @click="renderPreview"
+                  </button>
+                  <button
+                    v-if="hasPreview"
+                    @click="resetToEdit"
+                    class="rounded-lg border-2 border-black bg-white px-6 py-3 font-bold text-black hover:bg-black hover:text-white"
                   >
                     <el-icon class="mr-1"><Refresh /></el-icon>
-                    重新渲染
-                  </el-button>
+                    重新编辑
+                  </button>
                 </div>
 
-                <el-result
-                  v-if="uploadState"
-                  :icon="uploadState.type"
-                  :title="uploadState.message"
-                >
-                  <template #sub-title>
-                    <span
-                      v-if="uploadState.type === 'success'"
-                      class="text-xs text-gray-600"
-                    >
-                      如果工具对你有帮助，欢迎
-                      <a
-                        :href="DONATE_QR_URL"
-                        target="_blank"
-                        rel="noreferrer"
-                        class="ml-1 text-blue-600 underline decoration-dotted hover:text-blue-700"
-                      >赞赏</a
-                      >，谢谢支持 💛
-                    </span>
-                    <span
-                      v-else-if="uploadState.type === 'error'"
-                      class="text-xs text-red-600"
-                    >
-                      可能是触发了每日上传 10 张的限制，请稍后再试。
-                    </span>
-                  </template>
-                </el-result>
+                <div v-if="uploadState" class="rounded-xl border-2 border-black bg-white p-6">
+                  <div class="flex items-start gap-3">
+                    <el-icon :size="24" :class="uploadState.type === 'success' ? 'text-green-600' : 'text-red-600'">
+                      <SuccessFilled v-if="uploadState.type === 'success'" />
+                      <CircleClose v-else />
+                    </el-icon>
+                    <div class="flex-1">
+                      <p class="font-bold text-black mb-2">{{ uploadState.message }}</p>
+                      <p
+                        v-if="uploadState.type === 'success'"
+                        class="text-xs text-black"
+                      >
+                        如果工具对你有帮助，欢迎
+                        <a
+                          :href="DONATE_QR_URL"
+                          target="_blank"
+                          rel="noreferrer"
+                          class="font-bold underline hover:no-underline"
+                        >赞赏</a
+                        >，谢谢支持 💛
+                      </p>
+                      <p
+                        v-else-if="uploadState.type === 'error'"
+                        class="text-xs text-red-600"
+                      >
+                        可能是触发了每日上传 10 张的限制，请稍后再试。
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </el-card>
+          </div>
         </section>
       </div>
     </div>
@@ -310,12 +378,14 @@
 <script setup lang="ts">
 import { computed, onUnmounted, ref, watch } from 'vue';
 import { ElMessage, ElMessageBox, ElIcon } from 'element-plus';
-import { Upload, Download, Picture, Refresh, WarningFilled } from '@element-plus/icons-vue';
+import { Upload, Download, Picture, Refresh, WarningFilled, InfoFilled, Close, SuccessFilled, CircleClose } from '@element-plus/icons-vue';
 import { isAxiosError } from 'axios';
+import { Cropper } from 'vue-advanced-cropper';
+import 'vue-advanced-cropper/dist/style.css';
 
 import { CAPTCHA_APP_ID, CUP_HEIGHT, CUP_WIDTH, MAX_UPLOAD_BYTES } from '@/config/heytea';
 import { requestCaptcha } from '@/utils/captcha';
-import { readFileAsImage, renderToCupCanvas, type ToneMode } from '@/utils/image';
+import { loadImage, type ToneMode } from '@/utils/image';
 import {
   fetchUserInfo,
   loginWithSms,
@@ -328,6 +398,12 @@ import {
 const GITHUB_URL = 'https://github.com/YangguangZhou/HeyTea-DIY-Toolkit/';
 const STORAGE_KEY = 'heytea-token';
 const DONATE_QR_URL = `${import.meta.env.BASE_URL}donate.jpg`;
+
+const toneOptions = [
+  { label: '黑白', value: 'binary' as ToneMode },
+  { label: '灰度', value: 'grayscale' as ToneMode },
+  { label: '原图', value: 'original' as ToneMode },
+];
 
 type UploadState = {
   type: 'success' | 'warning' | 'error';
@@ -399,13 +475,15 @@ let countdownTimer: number | null = null;
 
 const fileInputRef = ref<HTMLInputElement>();
 const canvasRef = ref<HTMLCanvasElement>();
+const cropperRef = ref<InstanceType<typeof Cropper>>();
+const cropperContainer = ref<HTMLDivElement>();
 
 const workingImage = ref<HTMLImageElement | null>(null);
+const cropperImageSrc = ref<string>('');
 const processedBlob = ref<Blob | null>(null);
 const toneMode = ref<ToneMode>('binary');
 const isDraggingFile = ref(false);
 const binaryThreshold = ref(170);
-const fitMode = ref<'cover' | 'contain'>('cover');
 const forcePng = ref(true);
 const isRendering = ref(false);
 const downloadName = ref('target.png');
@@ -568,14 +646,92 @@ async function onFileInput(event: Event) {
 
 async function handleFile(file: File) {
   try {
-    const image = await readFileAsImage(file);
-    workingImage.value = image;
-    downloadName.value = file.name.replace(/\.[^.]+$/, '') + '.png';
-    await renderPreview();
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      if (!e.target?.result) return;
+      cropperImageSrc.value = e.target.result as string;
+      const image = await loadImage(e.target.result as string);
+      workingImage.value = image;
+      downloadName.value = file.name.replace(/\.[^.]+$/, '') + '.png';
+      processedBlob.value = null;
+    };
+    reader.readAsDataURL(file);
   } catch (error) {
     const message = getErrorMessage(error, '图片处理失败');
     ElMessage.error(message);
   }
+}
+
+async function applyCrop() {
+  if (!cropperRef.value || !canvasRef.value) return;
+  
+  isRendering.value = true;
+  try {
+    const result = cropperRef.value.getResult();
+    const canvas = result.canvas;
+    
+    if (!canvas) {
+      throw new Error('无法获取裁切结果');
+    }
+
+    // Create a new canvas with cup dimensions
+    const outputCanvas = canvasRef.value;
+    const ctx = outputCanvas.getContext('2d');
+    if (!ctx) {
+      throw new Error('当前浏览器不支持 Canvas');
+    }
+
+    outputCanvas.width = CUP_WIDTH;
+    outputCanvas.height = CUP_HEIGHT;
+    
+    // Fill with white background
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, CUP_WIDTH, CUP_HEIGHT);
+    
+    // Draw the cropped image
+    ctx.drawImage(canvas, 0, 0, CUP_WIDTH, CUP_HEIGHT);
+
+    // Apply tone mode
+    if (toneMode.value !== 'original') {
+      const imageData = ctx.getImageData(0, 0, outputCanvas.width, outputCanvas.height);
+      switch (toneMode.value) {
+        case 'binary':
+          applyBinaryThreshold(imageData, binaryThreshold.value);
+          break;
+        case 'grayscale':
+          applyGrayscale(imageData);
+          break;
+      }
+      ctx.putImageData(imageData, 0, 0);
+    }
+
+    // Export to blob
+    const blob = await exportWithCompression(outputCanvas, MAX_UPLOAD_BYTES, forcePng.value);
+    processedBlob.value = blob;
+    
+    if (forcePng.value && blob.type !== 'image/png') {
+      compressionHint.value = `PNG 超出 ${MAX_SIZE_KB}KB，已自动压缩为 JPG。`;
+      ElMessage.warning(compressionHint.value);
+    } else {
+      compressionHint.value = '';
+    }
+    uploadState.value = null;
+  } catch (error) {
+    const message = getErrorMessage(error, '处理失败');
+    ElMessage.error(message);
+  } finally {
+    isRendering.value = false;
+  }
+}
+
+function cancelCrop() {
+  workingImage.value = null;
+  cropperImageSrc.value = '';
+  processedBlob.value = null;
+}
+
+function resetToEdit() {
+  processedBlob.value = null;
 }
 
 function hasFilePayload(event: DragEvent) {
@@ -616,33 +772,64 @@ async function handleDrop(event: DragEvent) {
   }
 }
 
+function applyGrayscale(imageData: ImageData) {
+  const { data } = imageData;
+  for (let i = 0; i < data.length; i += 4) {
+    const gray = data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114;
+    data[i] = data[i + 1] = data[i + 2] = gray;
+  }
+}
+
+function applyBinaryThreshold(imageData: ImageData, threshold = 170) {
+  const limit = Math.max(0, Math.min(255, Math.round(threshold)));
+  const { data } = imageData;
+  for (let i = 0; i < data.length; i += 4) {
+    const gray = data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114;
+    const value = gray >= limit ? 255 : 0;
+    data[i] = data[i + 1] = data[i + 2] = value;
+  }
+}
+
+async function exportWithCompression(canvas: HTMLCanvasElement, maxBytes: number, preferPng: boolean): Promise<Blob> {
+  const attempts: Array<{ type: string; quality?: number }> = preferPng
+    ? [{ type: 'image/png' }]
+    : [
+        { type: 'image/png' },
+        { type: 'image/jpeg', quality: 0.95 },
+        { type: 'image/jpeg', quality: 0.9 },
+        { type: 'image/jpeg', quality: 0.85 },
+        { type: 'image/jpeg', quality: 0.8 },
+        { type: 'image/jpeg', quality: 0.75 },
+        { type: 'image/jpeg', quality: 0.7 },
+        { type: 'image/jpeg', quality: 0.65 },
+        { type: 'image/jpeg', quality: 0.6 },
+        { type: 'image/jpeg', quality: 0.55 },
+        { type: 'image/jpeg', quality: 0.5 },
+      ];
+
+  let candidate: Blob | null = null;
+  for (const attempt of attempts) {
+    const blob = await canvasToBlob(canvas, attempt.type, attempt.quality);
+    if (!blob) continue;
+    candidate = blob;
+    if (blob.size <= maxBytes) return blob;
+  }
+
+  if (!candidate) {
+    throw new Error('无法导出图片');
+  }
+  return candidate;
+}
+
+function canvasToBlob(canvas: HTMLCanvasElement, type: string, quality?: number): Promise<Blob | null> {
+  return new Promise((resolve) => {
+    canvas.toBlob((blob) => resolve(blob), type, quality);
+  });
+}
+
 async function renderPreview() {
-  if (!canvasRef.value || !workingImage.value) {
-    return;
-  }
-  isRendering.value = true;
-  try {
-    const blob = await renderToCupCanvas(canvasRef.value, workingImage.value, {
-      toneMode: toneMode.value,
-      threshold: binaryThreshold.value,
-      fit: fitMode.value,
-      targetFormat: forcePng.value ? 'png' : 'auto',
-      maxBytes: MAX_UPLOAD_BYTES,
-    });
-    processedBlob.value = blob;
-    if (forcePng.value && blob.type !== 'image/png') {
-      compressionHint.value = `PNG 超出 ${MAX_SIZE_KB}KB，已自动压缩为 JPG。`;
-      ElMessage.warning(compressionHint.value);
-    } else {
-      compressionHint.value = '';
-    }
-    uploadState.value = null;
-  } catch (error) {
-    const message = getErrorMessage(error, '渲染失败');
-    ElMessage.error(message);
-  } finally {
-    isRendering.value = false;
-  }
+  // This function is now replaced by applyCrop
+  await applyCrop();
 }
 
 async function handleUpload() {
@@ -706,9 +893,9 @@ function handleDownload() {
   URL.revokeObjectURL(url);
 }
 
-watch([toneMode, binaryThreshold, fitMode, forcePng], () => {
-  if (workingImage.value) {
-    renderPreview();
+watch([toneMode, binaryThreshold, forcePng], () => {
+  if (hasPreview.value && workingImage.value) {
+    applyCrop();
   }
 });
 
@@ -761,3 +948,36 @@ async function getSubtleCrypto(): Promise<SubtleCrypto> {
 }
 </script>
 
+<style scoped>
+.custom-tabs :deep(.el-tabs__nav-wrap::after) {
+  display: none;
+}
+
+.custom-tabs :deep(.el-tabs__item) {
+  font-weight: 600;
+  color: #000;
+}
+
+.custom-tabs :deep(.el-tabs__item.is-active) {
+  color: #000;
+}
+
+.custom-tabs :deep(.el-tabs__active-bar) {
+  background-color: #000;
+  height: 3px;
+}
+
+.cropper {
+  height: 100%;
+  background: #f3f4f6;
+}
+
+:deep(.vue-advanced-cropper__background),
+:deep(.vue-advanced-cropper__foreground) {
+  background: #ffffff;
+}
+
+:deep(.vue-advanced-cropper__stretcher) {
+  background: transparent;
+}
+</style>
