@@ -220,7 +220,30 @@
                   v-if="uploadState"
                   :icon="uploadState.type"
                   :title="uploadState.message"
-                />
+                >
+                  <template #sub-title>
+                    <span
+                      v-if="uploadState.type === 'success'"
+                      class="text-xs text-slate-400"
+                    >
+                      如果工具对你有帮助，欢迎
+                      <a
+                        :href="DONATE_QR_URL"
+                        target="_blank"
+                        rel="noreferrer"
+                        class="ml-1 text-brand-300 underline decoration-dotted hover:text-brand-200"
+                      >赞赏
+                      </a>，谢谢支持 💛
+                    </span>
+                    <div
+                      v-else-if="uploadState.details"
+                      class="mt-2 rounded border border-red-400/30 bg-slate-900/60 p-3 text-left"
+                    >
+                      <p class="text-xs text-slate-400">喜茶返回：</p>
+                      <pre class="mt-1 text-xs text-red-100 whitespace-pre-wrap break-all">{{ uploadState.details }}</pre>
+                    </div>
+                  </template>
+                </el-result>
               </div>
             </div>
           </el-card>
@@ -249,6 +272,13 @@ import {
 
 const GITHUB_URL = 'https://github.com/SuInk/HeyTea-DIY-Toolkit';
 const STORAGE_KEY = 'heytea-token';
+const DONATE_QR_URL = `${import.meta.env.BASE_URL}donate.jpg`;
+
+type UploadState = {
+  type: 'success' | 'warning' | 'error';
+  message: string;
+  details?: string;
+};
 
 function extractServerMessage(payload: unknown): string | null {
   if (!payload) {
@@ -285,6 +315,20 @@ function getErrorMessage(error: unknown, fallback: string) {
   return fallback;
 }
 
+function formatServerPayload(payload: unknown): string | null {
+  if (payload === null || payload === undefined) {
+    return null;
+  }
+  if (typeof payload === 'string') {
+    return payload;
+  }
+  try {
+    return JSON.stringify(payload, null, 2);
+  } catch {
+    return String(payload);
+  }
+}
+
 const activeTab = ref<'sms' | 'token'>('sms');
 const phone = ref('');
 const smsCode = ref('');
@@ -312,7 +356,7 @@ const selectedFileLabel = computed(() =>
     ? buildFilename(downloadName.value, processedBlob.value)
     : downloadName.value || '未选择文件'
 );
-const uploadState = ref<{ type: 'success' | 'warning' | 'error'; message: string } | null>(null);
+const uploadState = ref<UploadState | null>(null);
 const isUploading = ref(false);
 const compressionHint = ref('');
 const lastUploadHash = ref<string | null>(null);
@@ -542,7 +586,13 @@ async function handleUpload() {
     ElMessage.success('杯贴上传成功');
   } catch (error) {
     const message = getErrorMessage(error, '上传失败');
-    uploadState.value = { type: 'error', message };
+    const details = isAxiosError(error) ? formatServerPayload(error.response?.data) : null;
+    const nextState: UploadState = { type: 'error', message };
+    if (details) {
+      nextState.details = details;
+      console.error('HeyTea upload failed:', details);
+    }
+    uploadState.value = nextState;
     ElMessage.error(message);
   } finally {
     isUploading.value = false;
