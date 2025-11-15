@@ -2,10 +2,12 @@
 
 Vue 3 + TypeScript + Element Plus + Tailwind CSS + Node.js 代理，实现喜茶杯贴上传工具，逻辑参考 [FuQuan233/HeyTea_AutoUpload](https://github.com/FuQuan233/HeyTea_AutoUpload)。
 
+本仓库从 [SuInk/HeyTea-DIY-Toolkit](https://github.com/SuInk/HeyTea-DIY-Toolkit) Fork而来
+
 ## 在线体验
 
-如果只是想直接使用，可以访问 Vercel 托管的版本：<https://heytea-diy-toolkit.vercel.app>
-或国内加速版本<https://heytea.suink.cn>
+如果想在线使用，可以使用托管的版本：<https://hey.jerryz.com.cn>
+
 ## 功能概览
 
 - 手机号短信登录（Node 端转发喜茶接口）
@@ -35,7 +37,7 @@ npm start       # Express 读取 dist 并提供 /api/*
 
 ## Vercel 部署（静态 + API 一体）
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FSuInk%2FHeyTea-DIY-Toolkit&project-name=heytea-diy-toolkit&repository-name=heytea-diy-toolkit&build-command=npm%20run%20frontend%3Abuild&install-command=npm%20install&output-directory=frontend%2Fdist)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FYangguangZhou%2FHeyTea-DIY-Toolkit&project-name=heytea-diy-toolkit&repository-name=heytea-diy-toolkit&build-command=npm%20run%20frontend%3Abuild&install-command=npm%20install&output-directory=frontend%2Fdist)
 
 仓库根目录包含 `api/sms/send.js`、`api/login/sms.js`、`api/user.js`、`api/upload.js` 等 Serverless 端点（内部都复用 `server/app.js`），Vercel 会为每个端点生成函数，前端可直接访问同源 `/api/*`。
 
