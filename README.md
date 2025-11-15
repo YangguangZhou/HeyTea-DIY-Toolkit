@@ -5,7 +5,7 @@ Vue 3 + TypeScript + Element Plus + Tailwind CSS + Node.js 代理，实现喜茶
 ## 在线体验
 
 如果只是想直接使用，可以访问 Vercel 托管的版本：<https://heytea-diy-toolkit.vercel.app>
-
+或国内加速版本<https://heytea.suink.cn>
 ## 功能概览
 
 - 手机号短信登录（Node 端转发喜茶接口）
