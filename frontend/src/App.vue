@@ -342,6 +342,27 @@
                     </div>
                   </div>
                 </div>
+
+                <div v-if="!uploadState" class="rounded-lg border border-gray-200 bg-white p-5">
+                  <div class="flex items-start gap-3">
+                    <el-icon :size="20" class="text-amber-600 mt-0.5">
+                      <WarningFilled />
+                    </el-icon>
+                    <div class="flex-1">
+                      <p class="font-semibold text-gray-900 mb-2">支持开发者</p>
+                      <p class="text-sm text-gray-700">
+                        如果工具对你有帮助，欢迎
+                        <a
+                          :href="DONATE_QR_URL"
+                          target="_blank"
+                          rel="noreferrer"
+                          class="font-semibold text-amber-700 underline hover:no-underline"
+                        >赞赏支持</a
+                        >，你的鼓励是我持续开发的动力，谢谢！
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
