@@ -353,7 +353,7 @@
     <el-dialog
       v-model="showCropper"
       title="裁切图片"
-      width="90%"
+      width="min(90%, 900px)"
       :close-on-click-modal="false"
       class="cropper-dialog"
       @close="handleCropperClose"
@@ -674,6 +674,8 @@ async function handleFile(file: File) {
       workingImage.value = image;
       downloadName.value = file.name.replace(/\.[^.]+$/, '') + '.png';
       processedBlob.value = null;
+      // Automatically open cropper modal after image is loaded
+      showCropper.value = true;
     };
     reader.readAsDataURL(file);
   } catch (error) {
@@ -1062,6 +1064,8 @@ async function getSubtleCrypto(): Promise<SubtleCrypto> {
 
 .cropper-dialog :deep(.el-dialog__body) {
   padding: 1.5rem;
+  max-height: calc(100vh - 250px);
+  overflow-y: auto;
 }
 
 .cropper-dialog :deep(.el-dialog__footer) {
@@ -1077,13 +1081,15 @@ async function getSubtleCrypto(): Promise<SubtleCrypto> {
 
 .cropper-container {
   width: 100%;
-  max-width: 800px;
+  max-width: 600px;
+  max-height: calc(100vh - 350px);
   margin: 0 auto;
   aspect-ratio: 596 / 832;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
+  border: 3px solid #374151;
+  border-radius: 0.75rem;
   overflow: hidden;
   background: #f9fafb;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .cropper {
@@ -1098,5 +1104,16 @@ async function getSubtleCrypto(): Promise<SubtleCrypto> {
 
 :deep(.vue-advanced-cropper__stretcher) {
   background: transparent;
+}
+
+:deep(.vue-line-wrapper) {
+  border: 2px dashed #6b7280 !important;
+}
+
+:deep(.vue-handler) {
+  background: #374151 !important;
+  border: 2px solid #ffffff !important;
+  width: 14px !important;
+  height: 14px !important;
 }
 </style>
