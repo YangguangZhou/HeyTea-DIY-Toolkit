@@ -1059,42 +1059,45 @@ async function getSubtleCrypto(): Promise<SubtleCrypto> {
 
 .cropper-dialog :deep(.el-dialog__header) {
   border-bottom: 1px solid #e5e7eb;
-  padding: 1.25rem;
+  padding: 1rem 1.5rem;
 }
 
 .cropper-dialog :deep(.el-dialog__body) {
   padding: 1.5rem;
-  max-height: calc(100vh - 250px);
+  max-height: calc(100vh - 200px);
   overflow-y: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cropper-dialog :deep(.el-dialog__footer) {
   border-top: 1px solid #e5e7eb;
-  padding: 1.25rem;
+  padding: 1rem 1.5rem;
 }
 
 .cropper-modal-content {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  width: 100%;
 }
 
 .cropper-container {
   width: 100%;
   max-width: 600px;
-  max-height: calc(100vh - 350px);
+  max-height: calc(100vh - 300px);
   margin: 0 auto;
   aspect-ratio: 596 / 832;
-  border: 3px solid #374151;
-  border-radius: 0.75rem;
+  border: 1px solid #000000;
+  border-radius: 0.5rem;
   overflow: hidden;
-  background: #f9fafb;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  background: #ffffff;
 }
 
 .cropper {
   height: 100%;
-  background: #f3f4f6;
+  background: #f9fafb;
 }
 
 :deep(.vue-advanced-cropper__background),
@@ -1107,13 +1110,13 @@ async function getSubtleCrypto(): Promise<SubtleCrypto> {
 }
 
 :deep(.vue-line-wrapper) {
-  border: 2px dashed #6b7280 !important;
+  border: 1px solid #000000 !important;
 }
 
 :deep(.vue-handler) {
-  background: #374151 !important;
-  border: 2px solid #ffffff !important;
-  width: 14px !important;
-  height: 14px !important;
+  background: #000000 !important;
+  border: 1px solid #ffffff !important;
+  width: 10px !important;
+  height: 10px !important;
 }
 </style>
