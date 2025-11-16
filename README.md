@@ -1,4 +1,4 @@
-# HeyTea Cup Sticker
+# HeyTea Sticker Tool
 
 Vue 3 + TypeScript + Element Plus + Tailwind CSS + Node.js 代理，实现喜茶杯贴上传工具，逻辑参考 [FuQuan233/HeyTea_AutoUpload](https://github.com/FuQuan233/HeyTea_AutoUpload)。
 

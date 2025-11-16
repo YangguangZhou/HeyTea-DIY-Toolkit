@@ -1,14 +1,72 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/heytea.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>喜茶杯贴工作台 · HeyTea Sticker Lab</title>
-    <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>喜茶杯贴工作台 - HeyTea Sticker Tool</title>
+  <meta name="description" content="喜茶杯贴工作台：在线裁切并生成喜茶杯贴，支持验证码登录并一键上传。" />
+  <meta name="keywords" content="喜茶, HeyTea, 杯贴, sticker, 裁切, PNG, 图像处理" />
+  <meta name="robots" content="index,follow" />
+  <meta name="theme-color" content="#111827" />
+  <link rel="icon" type="image/svg+xml" href="/heytea.svg" />
+  <link rel="canonical" href="https://hey.jerryz.com.cn/" />
+
+  <!-- Open Graph -->
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="喜茶杯贴工作台 - HeyTea Sticker Tool" />
+  <meta property="og:description" content="在线裁切并生成喜茶杯贴，支持验证码登录并一键上传。" />
+  <meta property="og:url" content="https://hey.jerryz.com.cn/" />
+  <meta property="og:site_name" content="喜茶杯贴工作台" />
+  <meta property="og:image" content="https://hey.jerryz.com.cn/heytea.svg" />
+  <meta property="og:image:type" content="image/svg+xml" />
+
+
+
+  <!-- Structured data: WebSite / Organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://hey.jerryz.com.cn/#website",
+        "url": "https://hey.jerryz.com.cn/",
+        "name": "喜茶杯贴工作台",
+        "description": "在线裁切并生成喜茶杯贴，支持验证码登录并一键上传。",
+        "publisher": {
+          "@id": "https://jerryz.com.cn/"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://jerryz.com.cn/",
+        "name": "Jerry Zhou",
+        "url": "https://hey.jerryz.com.cn/",
+        "image": {
+          "@type": "ImageObject",
+          "url": "https://hey.jerryz.com.cn/heytea.svg"
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Performance hints -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preload" href="/src/main.ts" as="script">
+
+  <!-- Third-party scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js" defer></script>
+  <script defer src="https://umami.jerryz.com.cn/script.js" data-website-id="c6f19ec4-93e9-42fc-bf6e-79fda5a314ad"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2597042766299857" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
 </html>

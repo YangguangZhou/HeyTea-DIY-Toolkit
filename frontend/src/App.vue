@@ -3,7 +3,7 @@
     <div class="mx-auto max-w-6xl px-4 py-10">
       <header class="flex flex-col gap-6 pb-8">
         <div class="flex flex-wrap items-center justify-between gap-3">
-          <p class="text-sm font-semibold uppercase tracking-wide text-gray-700">HeyTea DIY Toolkit</p>
+          <p class="text-sm font-semibold uppercase tracking-wide text-gray-700">HeyTea Sticker Tool</p>
           <a
             :href="GITHUB_URL"
             class="flex items-center gap-2 rounded-lg border border-gray-300 px-4 py-2 text-xs font-medium uppercase tracking-wide text-gray-700 transition hover:border-gray-900 hover:bg-gray-900 hover:text-white"
@@ -342,6 +342,27 @@
                     </div>
                   </div>
                 </div>
+
+                <div v-if="!uploadState" class="rounded-lg border border-gray-200 bg-gradient-to-br from-amber-50 to-orange-50 p-5">
+                  <div class="flex items-start gap-3">
+                    <el-icon :size="20" class="text-amber-600 mt-0.5">
+                      <WarningFilled />
+                    </el-icon>
+                    <div class="flex-1">
+                      <p class="font-semibold text-gray-900 mb-2">💛 支持开发者</p>
+                      <p class="text-sm text-gray-700">
+                        如果工具对你有帮助，欢迎
+                        <a
+                          :href="DONATE_QR_URL"
+                          target="_blank"
+                          rel="noreferrer"
+                          class="font-semibold text-amber-700 underline hover:no-underline"
+                        >赞赏支持</a
+                        >，你的鼓励是我持续开发的动力，谢谢！
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -417,7 +438,7 @@ import {
 
 const GITHUB_URL = 'https://github.com/YangguangZhou/HeyTea-DIY-Toolkit/';
 const STORAGE_KEY = 'heytea-token';
-const DONATE_QR_URL = `${import.meta.env.BASE_URL}donate.jpg`;
+const DONATE_QR_URL = `https://pay.jerryz.com.cn/`;
 
 const toneOptions = [
   { label: '黑白', value: 'binary' as ToneMode },
@@ -916,11 +937,6 @@ function canvasToBlob(canvas: HTMLCanvasElement, type: string, quality?: number)
   });
 }
 
-async function renderPreview() {
-  // This function is now replaced by applyCrop
-  await applyCrop();
-}
-
 async function handleUpload() {
   if (!authToken.value || !user.value || !processedBlob.value) {
     ElMessage.error('请先登录并准备好图片');
@@ -1086,18 +1102,28 @@ async function getSubtleCrypto(): Promise<SubtleCrypto> {
 .cropper-container {
   width: 100%;
   max-width: 600px;
-  max-height: calc(100vh - 300px);
   margin: 0 auto;
-  aspect-ratio: 596 / 832;
-  border: 1px solid #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
   overflow: hidden;
-  background: #ffffff;
+  background: #f9fafb;
+  min-height: 500px;
 }
 
 .cropper {
+  width: 100%;
   height: 100%;
   background: #f9fafb;
+}
+
+/* 保持图片居中显示 */
+:deep(.vue-advanced-cropper) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 :deep(.vue-advanced-cropper__background),
@@ -1109,14 +1135,36 @@ async function getSubtleCrypto(): Promise<SubtleCrypto> {
   background: transparent;
 }
 
-:deep(.vue-line-wrapper) {
+/* 裁剪框边框 - 单层黑色线 */
+:deep(.vue-simple-line) {
   border: 1px solid #000000 !important;
+  box-shadow: none !important;
+}
+
+:deep(.vue-line-wrapper) {
+  border: none !important;
+}
+
+:deep(.vue-simple-line__wrapper) {
+  border: 1px solid #000000 !important;
+}
+
+/* 裁剪框的八个控制点 - 保留但优化样式 */
+:deep(.vue-simple-handler) {
+  background: #000000 !important;
+  border: 2px solid #ffffff !important;
+  width: 12px !important;
+  height: 12px !important;
+  border-radius: 50% !important;
+  box-shadow: 0 0 0 1px #000000 !important;
 }
 
 :deep(.vue-handler) {
   background: #000000 !important;
-  border: 1px solid #ffffff !important;
-  width: 10px !important;
-  height: 10px !important;
+  border: 2px solid #ffffff !important;
+  width: 12px !important;
+  height: 12px !important;
+  border-radius: 50% !important;
+  box-shadow: 0 0 0 1px #000000 !important;
 }
 </style>
