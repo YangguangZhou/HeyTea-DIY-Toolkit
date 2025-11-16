@@ -584,8 +584,18 @@ async function handleSendCode(payload?: CaptchaPayload) {
   try {
     const result = await sendSmsCode(phone.value, payload);
     if (result.requiresCaptcha) {
-      isSendingCode.value = false;
-      const captcha = await requestCaptcha(CAPTCHA_APP_ID);
+      // 保持 isSendingCode 为 true：在需要验证码时，按钮应保持 loading 并不可点击，
+      // 直到用户完成/取消验证码或最终发送成功/失败。
+      let captcha: { ticket: string; randstr: string } | null = null;
+      try {
+        captcha = await requestCaptcha(CAPTCHA_APP_ID);
+      } catch (err) {
+        // 用户取消验证码或验证码请求失败，允许再次点击
+        ElMessage.info('已取消验证码验证');
+        return; // finally 会在外层将 isSendingCode 复位（如果是初始调用）
+      }
+
+      // 使用得到的验证码继续发送（递归调用会保留 loading 状态直到最终完成）
       await handleSendCode({ ticket: captcha.ticket, randstr: captcha.randstr });
       return;
     }
