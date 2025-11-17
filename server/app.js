@@ -7,8 +7,17 @@ const axios = require('axios');
 const multer = require('multer');
 const FormData = require('form-data');
 
-const { HEYTEA_API_BASE, HEYTEA_BASE_HEADERS, CUP_WIDTH, CUP_HEIGHT } = require('./heyteaConfig');
-const { encryptHeyteaMobile, timestampSign, decryptResponseData } = require('./heyteaCrypto');
+const {
+  HEYTEA_API_BASE,
+  HEYTEA_BASE_HEADERS,
+  CUP_WIDTH,
+  CUP_HEIGHT,
+} = require('../shared/heyteaConfig');
+const {
+  encryptHeyteaMobile,
+  timestampSign,
+  decryptResponseData,
+} = require('../shared/heyteaCrypto');
 
 const app = express();
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 2 * 1024 * 1024 } });

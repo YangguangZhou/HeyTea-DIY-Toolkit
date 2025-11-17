@@ -9,6 +9,8 @@
     "frontend:dev": "npm run dev --prefix frontend",
     "frontend:start": "npm run start --prefix frontend",
     "server:start": "npm run start --prefix server",
+    "worker:dev": "npx wrangler dev --local worker/src/index.js",
+    "worker:deploy": "npx wrangler deploy worker/src/index.js",
     "build": "npm run frontend:build",
     "start": "npm run frontend:build && npm run server:start"
   },

@@ -41,12 +41,25 @@ npm start       # Express 读取 dist 并提供 /api/*
 
 仓库根目录包含 `api/sms/send.js`、`api/login/sms.js`、`api/user.js`、`api/upload.js` 等 Serverless 端点（内部都复用 `server/app.js`），Vercel 会为每个端点生成函数，前端可直接访问同源 `/api/*`。
 
+## Cloudflare Worker 部署
+
+后端代理已抽离为 `worker/src/index.js`，可以直接运行在 Cloudflare Workers：
+
+1. 安装依赖：`npm install`（需包含 `crypto-js` 等共享依赖）。额外安装 Wrangler：`npm install -g wrangler` 或在仓库根目录执行一次 `npx wrangler --version` 以按需拉取。
+2. 登录 Cloudflare：`npx wrangler login`。
+3. 本地模拟：`npm run worker:dev`（等价于 `wrangler dev --local worker/src/index.js`），前端的 `VITE_API_BASE` 指向 `http://127.0.0.1:8787` 或命令行提示的地址即可调试。
+4. 部署：`npm run worker:deploy`。首次会根据 `wrangler.toml` 中的 `name` 创建 Worker，并输出如 `https://heytea-diy-worker.<subdomain>.workers.dev` 的地址。
+5. 将线上前端（例如 Cloudflare Pages/Vercel/静态站）中的 `VITE_API_BASE` 或 `.env.production` 指向上一步的 Worker 域名，所有 `/api/*` 调用都会由 Worker 在边缘请求喜茶官方 API。
+
+如需自定义 Worker 名称、KV、Routes 等，可修改根目录的 `wrangler.toml`。
 
 ## 目录结构
 
 ```
 frontend/  # Vite + Vue3 前端
-server/    # Express 代理层
+server/    # Express 代理层（本地/自建服务器使用）
+shared/    # Express 与 Worker 复用的配置、加解密逻辑
+worker/    # Cloudflare Worker 入口
 ```
 
 开发环境下，`frontend/.env.development` 默认指向 `http://localhost:8787`。如需自定义，修改该文件或通过环境变量覆盖 `VITE_API_BASE`。

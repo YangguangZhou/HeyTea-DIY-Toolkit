@@ -16,10 +16,14 @@ const HEYTEA_BASE_HEADERS = {
 const CAPTCHA_APP_ID = "197451715";
 const CUP_WIDTH = 596;
 const CUP_HEIGHT = 832;
-module.exports = {
+
+const config = {
   HEYTEA_API_BASE,
   HEYTEA_BASE_HEADERS,
   CAPTCHA_APP_ID,
   CUP_WIDTH,
   CUP_HEIGHT,
 };
+
+module.exports = config;
+module.exports.default = config;
