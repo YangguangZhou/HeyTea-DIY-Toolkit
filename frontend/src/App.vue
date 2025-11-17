@@ -320,24 +320,18 @@
                     </el-icon>
                     <div class="flex-1">
                       <p class="font-semibold text-gray-900 mb-2">{{ uploadState.message }}</p>
-                      <p
-                        v-if="uploadState.type === 'success'"
-                        class="text-sm text-gray-600"
-                      >
-                        如果工具对你有帮助，欢迎
+                      <p v-if="uploadState.type === 'success'" class="text-sm text-gray-600">
+                        请求量增加会直接带来接口与存储成本，如果工具帮到你，欢迎
                         <a
                           :href="DONATE_QR_URL"
                           target="_blank"
                           rel="noreferrer"
                           class="font-semibold text-gray-900 underline hover:no-underline"
                         >赞赏</a
-                        >，谢谢支持 💛
+                        >，一起维持服务运行 💛
                       </p>
-                      <p
-                        v-else-if="uploadState.type === 'error'"
-                        class="text-sm text-red-600"
-                      >
-                        可能是触发了每日上传 10 张的限制，请稍后再试。
+                      <p v-else-if="uploadState.type === 'error'" class="text-sm text-red-600">
+                        {{ uploadState.hint || '请刷新页面或稍后再试，若问题持续可更换网络或重新登录。' }}
                       </p>
                     </div>
                   </div>
@@ -351,14 +345,14 @@
                     <div class="flex-1">
                       <p class="font-semibold text-gray-900 mb-2">支持开发者</p>
                       <p class="text-sm text-gray-700">
-                        如果工具对你有帮助，欢迎
+                        工具完全免费开放，但大量请求会增加服务与接口成本。如果它为你节省了时间，也欢迎
                         <a
                           :href="DONATE_QR_URL"
                           target="_blank"
                           rel="noreferrer"
                           class="font-semibold text-amber-700 underline hover:no-underline"
                         >赞赏支持</a
-                        >，你的鼓励是我持续开发的动力，谢谢！
+                        >，帮助我继续维护并优化体验。
                       </p>
                     </div>
                   </div>
@@ -368,6 +362,66 @@
           </div>
         </section>
       </div>
+      
+      <section class="mt-12">
+        <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm space-y-6">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">FAQ</p>
+            <h2 class="mt-1 text-2xl font-bold text-gray-900">常见问题</h2>
+            <p class="mt-2 text-sm text-gray-600">
+              常见报错与排查建议都在这里，优先按照指引操作可以节省大量时间。
+            </p>
+          </div>
+          <div class="space-y-5">
+            <article class="rounded-lg border border-gray-100 bg-gray-50 p-4">
+              <h3 class="text-base font-semibold text-gray-900">登录失败：提示“当前注册行为存在异常，请稍后再试或更换注册方式”</h3>
+              <p class="mt-2 text-sm text-gray-600">
+                该提示多半说明手机号未完成官方注册或当前设备被风控。请在喜茶 App 或小程序确认号码可以正常登录，再回到本工具重试。
+              </p>
+            </article>
+            <article class="rounded-lg border border-gray-100 bg-gray-50 p-4">
+              <h3 class="text-base font-semibold text-gray-900">上传失败：提示“文件格式不允许上传”</h3>
+              <p class="mt-2 text-sm text-gray-600">
+                喜茶接口仅接受 PNG。请确保上传的原始文件就是 PNG，如果素材是 JPG，可先使用
+                <a
+                  href="https://convertio.co/zh/jpg-png/"
+                  target="_blank"
+                  rel="noreferrer"
+                  class="font-semibold text-gray-900 underline hover:no-underline"
+                >Convertio</a
+                >
+                等在线工具转换为 PNG 后再上传。
+              </p>
+            </article>
+            <article class="rounded-lg border border-gray-100 bg-gray-50 p-4">
+              <h3 class="text-base font-semibold text-gray-900">上传成功后小程序不显示</h3>
+              <p class="mt-2 text-sm text-gray-600">
+                需要保证本工具与喜茶小程序使用的是同一个账号。上传完成后在小程序中下拉刷新，必要时重新进入「杯贴 DIY」或重新登录即可同步。
+              </p>
+            </article>
+            <article class="rounded-lg border border-gray-100 bg-gray-50 p-4">
+              <h3 class="text-base font-semibold text-gray-900">图片尺寸错误</h3>
+              <p class="mt-2 text-sm text-gray-600">
+                请检查图片是否超过 200KB 。建议上传前先压缩，推荐使用
+                <a
+                  href="https://tinypng.com/"
+                  target="_blank"
+                  rel="noreferrer"
+                  class="font-semibold text-gray-900 underline hover:no-underline"
+                >TinyPNG</a
+                >
+                处理后再试。
+              </p>
+            </article>
+            <article class="rounded-lg border border-gray-100 bg-gray-50 p-4">
+              <h3 class="text-base font-semibold text-gray-900">其他上传失败</h3>
+              <p class="mt-2 text-sm text-gray-600">
+                每个账号每日最多上传 10 张杯贴。请确认喜茶小程序能正常打开上传界面并制作喜贴，同时排查当前网络是否稳定。
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
     </div>
     
     <!-- Cropper Modal -->
@@ -378,6 +432,7 @@
       :close-on-click-modal="false"
       class="cropper-dialog"
       @close="handleCropperClose"
+      @opened="handleCropperOpened"
     >
       <div class="cropper-modal-content">
         <div class="cropper-container">
@@ -417,7 +472,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onUnmounted, ref, watch } from 'vue';
+import { computed, nextTick, onUnmounted, ref, watch } from 'vue';
 import { ElMessage, ElMessageBox, ElIcon } from 'element-plus';
 import { Upload, Download, Picture, Refresh, WarningFilled, InfoFilled, Close, SuccessFilled, CircleClose, Edit } from '@element-plus/icons-vue';
 import { isAxiosError } from 'axios';
@@ -450,6 +505,11 @@ type UploadState = {
   type: 'success' | 'warning' | 'error';
   message: string;
   details?: string;
+  hint?: string;
+};
+
+type CropperInstance = InstanceType<typeof Cropper> & {
+  refresh?: () => void;
 };
 
 function extractServerMessage(payload: unknown): string | null {
@@ -516,7 +576,7 @@ let countdownTimer: number | null = null;
 
 const fileInputRef = ref<HTMLInputElement>();
 const canvasRef = ref<HTMLCanvasElement>();
-const cropperRef = ref<InstanceType<typeof Cropper>>();
+const cropperRef = ref<CropperInstance>();
 
 const workingImage = ref<HTMLImageElement | null>(null);
 const cropperImageSrc = ref<string>('');
@@ -721,6 +781,12 @@ function showCropperModal() {
 
 function handleCropperClose() {
   // Modal closed
+}
+
+function handleCropperOpened() {
+  nextTick(() => {
+    cropperRef.value?.refresh?.();
+  });
 }
 
 async function compressImage(blob: Blob, maxSizeBytes: number): Promise<Blob> {
@@ -947,6 +1013,39 @@ function canvasToBlob(canvas: HTMLCanvasElement, type: string, quality?: number)
   });
 }
 
+function buildUploadErrorState(error: unknown): UploadState {
+  const rawMessage = getErrorMessage(error, '上传失败');
+  const normalizedMessage = rawMessage.toLowerCase();
+  const nextState: UploadState = {
+    type: 'error',
+    message: rawMessage,
+  };
+
+  if (normalizedMessage.includes('network error')) {
+    nextState.message = '上传失败：可能触发了每日 10 张的频率限制';
+    nextState.hint = '仅 Network Error 才表示超出限制，请稍后再试或更换登录账号。';
+  } else if (normalizedMessage.includes('timeout') || rawMessage.includes('超时')) {
+    nextState.message = '上传请求超时';
+    nextState.hint = '请检查网络连接并刷新页面后重试。';
+  } else if (rawMessage.includes('文件格式不允许上传')) {
+    nextState.hint = '请确认原始文件为 PNG；JPG 虽会自动转换为 PNG，但存在失败概率，可先手动转换后上传。';
+  } else if (
+    rawMessage.includes('图片尺寸') ||
+    rawMessage.includes('尺寸不符合') ||
+    rawMessage.includes('大小') ||
+    rawMessage.includes('200')
+  ) {
+    nextState.hint = `请确保最终图片为 ${CUP_WIDTH}×${CUP_HEIGHT} 且不超过 ${MAX_SIZE_KB}KB，必要时先压缩再上传。`;
+  }
+
+  const details = isAxiosError(error) ? formatServerPayload(error.response?.data) : null;
+  if (details) {
+    nextState.details = details;
+  }
+  console.error('HeyTea upload failed:', details ?? rawMessage);
+  return nextState;
+}
+
 async function handleUpload() {
   if (!authToken.value || !user.value || !processedBlob.value) {
     ElMessage.error('请先登录并准备好图片');
@@ -984,15 +1083,9 @@ async function handleUpload() {
     lastUploadHash.value = currentHash;
     ElMessage.success('杯贴上传成功');
   } catch (error) {
-    const message = getErrorMessage(error, '上传失败');
-    const details = isAxiosError(error) ? formatServerPayload(error.response?.data) : null;
-    const nextState: UploadState = { type: 'error', message };
-    if (details) {
-      nextState.details = details;
-      console.error('HeyTea upload failed:', details);
-    }
+    const nextState = buildUploadErrorState(error);
     uploadState.value = nextState;
-    ElMessage.error(message);
+    ElMessage.error(nextState.message);
   } finally {
     isUploading.value = false;
   }
