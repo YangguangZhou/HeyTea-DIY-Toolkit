@@ -2,14 +2,6 @@ const HEYTEA_API_BASE = "https://app-go.heytea.com";
 const HEYTEA_BASE_HEADERS = {
   Accept: "*/*",
   "Content-Type": "application/json",
-  "x-client-version": "4.0.1",
-  "client-version": "4.0.1",
-  version: "4.0.1",
-  "x-region-id": "10",
-  region: "1",
-  "x-client": "app",
-  client: "2",
-  "x-version": "4.0.1",
   "charset": "utf-8",
   "Referer": "https://servicewechat.com/wx696a42df4f2456d3/400000137/page-frame.html",
   "User-Agent":
