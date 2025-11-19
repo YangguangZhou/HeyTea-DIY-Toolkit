@@ -435,7 +435,7 @@
       @opened="handleCropperOpened"
     >
       <div class="cropper-modal-content">
-        <div class="cropper-container">
+        <div class="cropper-container" :style="cropperBoxStyle">
           <Cropper
             ref="cropperRef"
             class="cropper"
@@ -472,7 +472,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onUnmounted, ref, watch } from 'vue';
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 import { ElMessage, ElMessageBox, ElIcon } from 'element-plus';
 import { Upload, Download, Picture, Refresh, WarningFilled, InfoFilled, Close, SuccessFilled, CircleClose, Edit } from '@element-plus/icons-vue';
 import { isAxiosError } from 'axios';
@@ -500,6 +500,7 @@ const toneOptions = [
   { label: '灰度', value: 'grayscale' as ToneMode },
   { label: '原图', value: 'original' as ToneMode },
 ];
+const CROP_ASPECT_RATIO = CUP_WIDTH / CUP_HEIGHT;
 
 type UploadState = {
   type: 'success' | 'warning' | 'error';
@@ -511,6 +512,21 @@ type UploadState = {
 type CropperInstance = InstanceType<typeof Cropper> & {
   refresh?: () => void;
 };
+
+const cropperSize = ref<{ width: number; height: number }>({ width: 0, height: 0 });
+const cropperBoxStyle = computed(() => {
+  const { width, height } = cropperSize.value;
+  if (!width || !height) {
+    return {
+      width: '100%',
+      minHeight: '500px',
+    };
+  }
+  return {
+    width: `${Math.round(width)}px`,
+    height: `${Math.round(height)}px`,
+  };
+});
 
 function extractServerMessage(payload: unknown): string | null {
   if (!payload) {
@@ -775,6 +791,23 @@ async function handleFile(file: File) {
   }
 }
 
+function updateCropperSize() {
+  if (typeof window === 'undefined') {
+    return;
+  }
+  const dialogMaxWidth = Math.min(window.innerWidth * 0.9, 900);
+  const horizontalPadding = 48;
+  const availableWidth = Math.max(dialogMaxWidth - horizontalPadding, 320);
+  const availableHeight = Math.max(window.innerHeight - 280, 360);
+  let width = availableWidth;
+  let height = width / CROP_ASPECT_RATIO;
+  if (height > availableHeight) {
+    height = availableHeight;
+    width = height * CROP_ASPECT_RATIO;
+  }
+  cropperSize.value = { width, height };
+}
+
 function showCropperModal() {
   showCropper.value = true;
 }
@@ -784,6 +817,7 @@ function handleCropperClose() {
 }
 
 function handleCropperOpened() {
+  updateCropperSize();
   nextTick(() => {
     cropperRef.value?.refresh?.();
   });
@@ -1120,10 +1154,16 @@ if (authToken.value) {
   resolveUserProfile();
 }
 
+onMounted(() => {
+  updateCropperSize();
+  window.addEventListener('resize', updateCropperSize);
+});
+
 onUnmounted(() => {
   if (countdownTimer) {
     window.clearInterval(countdownTimer);
   }
+  window.removeEventListener('resize', updateCropperSize);
 });
 
 function buildFilename(base: string, blob?: Blob | null) {
@@ -1203,8 +1243,6 @@ async function getSubtleCrypto(): Promise<SubtleCrypto> {
 }
 
 .cropper-container {
-  width: 100%;
-  max-width: 600px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -1213,7 +1251,7 @@ async function getSubtleCrypto(): Promise<SubtleCrypto> {
   border-radius: 0.5rem;
   overflow: hidden;
   background: #f9fafb;
-  min-height: 500px;
+  flex-shrink: 0;
 }
 
 .cropper {
